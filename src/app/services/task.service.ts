@@ -8,7 +8,7 @@ import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:8080/api/tasks';
+  private apiUrl = 'http://13.232.69.13:8080/api/tasks';
 
   constructor(private http: HttpClient) { }
 
