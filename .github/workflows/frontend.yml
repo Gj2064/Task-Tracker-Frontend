@@ -34,8 +34,23 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ubuntu/docker_compose
-          git pull origin main  # If using a separate repo for compose
+          
+          # Ensure latest docker-compose file is present
+          git pull origin main || true  # If using a separate repo for compose
+
+          # Give proper permissions
+          chmod +x docker-compose.yml || true
+
+          # Pull latest images
           docker pull garimajain2064/frontend:latest
           docker pull garimajain2064/backend:latest
-          docker-compose down  # Stop existing containers
-          docker-compose up -d  # Start fresh containers
+
+          # Stop & Remove existing containers to prevent conflicts
+          docker stop backend frontend mongo || true
+          docker rm backend frontend mongo || true
+
+          # Pull latest images for all services in docker-compose
+          docker-compose pull
+
+          # Start containers with the latest images
+          docker-compose up -d --force-recreate
