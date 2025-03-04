@@ -47,7 +47,7 @@ export class TaskService {
     return this.http.put<Task>(`${this.apiUrl}/${id}/start`, {});
   }
 
-  markCompletedTask(id: string): Observable<Task> {
+  markcompletedTask(id: string): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${id}/complete`, {});
   }
 
