@@ -21,7 +21,7 @@ RUN ng build
 FROM nginx:alpine
 
 # Copy the build output to replace the default nginx contents
-COPY --from=build /app/dist/demo /usr/share/nginx/html
+COPY --from=build /app/dist/demo /usr/share/nginx/html/browser
 
 # Copy custom nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
