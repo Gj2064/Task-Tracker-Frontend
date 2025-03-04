@@ -13,7 +13,7 @@ RUN npm ci --omit=dev
 COPY . .
 
 # Build the application
-RUN npm run build --prod
+RUN npm run build 
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
