@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../models/task.model';
-import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'http://13.232.69.13:8080/api/tasks';
+  private apiUrl = `http://backend:8080/api/tasks`; // Use Docker internal networking
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl);
@@ -48,9 +47,10 @@ export class TaskService {
     return this.http.put<Task>(`${this.apiUrl}/${id}/start`, {});
   }
 
-  markcompletedTask(id:string):Observable<Task>{
-    return this.http.put<Task>(`${this.apiUrl}/${id}/complete`,{});
+  markCompletedTask(id: string): Observable<Task> {
+    return this.http.put<Task>(`${this.apiUrl}/${id}/complete`, {});
   }
+
   endTask(id: string): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${id}/end`, {});
   }
