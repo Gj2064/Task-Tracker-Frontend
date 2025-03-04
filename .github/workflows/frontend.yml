@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - main  # Change this if using a different branch
+      - main  # Change this if needed
 
 jobs:
   build-and-deploy:
@@ -16,20 +16,19 @@ jobs:
     - name: Login to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build Docker Image
+    - name: Build and Push Docker Image
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
-    - name: Push Docker Image to Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-
-    - name: Deploy to EC2
+    - name: Deploy to EC2 and Run Docker Compose
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          cd /home/ubuntu/docker_compose
+          git pull origin main  # If stored in a separate repo
           docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-          docker stop frontend || true && docker rm frontend || true
-          docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+          docker-compose up -d
