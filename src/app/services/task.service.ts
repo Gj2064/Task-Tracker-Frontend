@@ -7,7 +7,7 @@ import { Task } from '../models/task.model';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = `http://backend:8080/api/tasks`; // Use Docker internal networking
+  private apiUrl = `http://13.201.63.95:8080/api/tasks`; // Use Docker internal networking
 
   constructor(private http: HttpClient) {}
 
